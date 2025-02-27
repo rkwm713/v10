@@ -1,0 +1,243 @@
+{
+    "type": "object",
+    "id": "#/spidacalc/calc/location.schema",
+    "description": "A location is single physical location that has a pole",
+    "additionalProperties": false,
+    "properties": {
+        "id": {
+            "description": "This is a database ID created by SPIDAdb.",
+            "type": "string"
+        },
+        "schema": {
+            "type": "string",
+            "description": "Full URL of the calc schema. /schema/spidacalc/calc/location.schema"
+        },
+        "version": {
+            "type": "number",
+            "description": "This is a schema version integer."
+        },
+        "label": {
+            "description": "Display name for project component",
+            "type": "string"
+        },
+        "address": {
+            "$ref": "../../general/address.schema"
+        },
+        "comments": {
+            "description": "Technician comments about location.",
+            "type": "string"
+        },
+        "designs": {
+            "description": "All pole structural designs for location",
+            "id": "designs",
+            "items": {
+                "$ref": "../../spidacalc/calc/design.schema"
+            },
+            "type": "array"
+        },
+        "forms": {
+            "description": "An optional array of location forms for this location",
+            "items": {
+                "$ref": "../../general/form.schema"
+            },
+            "type": "array"
+        },
+        "geographicCoordinate": {
+            "$ref": "../../general/geometry.schema"
+        },
+        "technician": {
+            "description": "Name of technician that did work at this location.",
+            "type": "string"
+        },
+        "crossStreet1": {
+            "description": "The first cross street.",
+            "type": "string"
+        },
+        "crossStreet2": {
+            "description": "The second cross street.",
+            "type": "string"
+        },
+        "images": {
+            "description": "Photos/images for this location. Images are required to have a url and can have a link.",
+            "id": "images",
+            "items": {
+                "additionalProperties": false,
+                "required": ["url"],
+                "properties": {
+                    "url": {
+                        "description": "Path to the image file.",
+                        "type": "string"
+                    },
+                    "direction": {
+                        "description": "the direction string that the photo was taken in",
+                        "type": "string"
+                    },
+                    "originalFilePath": {
+                      "type": "string",
+                      "description": "the full path to the original photo file"
+                    },
+                    "link": {
+                        "description":"link to the source of the photo along with the id for that source. NOTE: this is only to be used with SpidaDB, Calc will currently ignore the link.",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "source",
+                            "id"
+                        ],
+                        "properties": {
+                            "source": {
+                                "type": "string",
+                                "description": "The source of the 'id'.  The service name configured by SPIDA."
+                            },
+                            "id": {
+                                "type": "string",
+                                "description": "This is a database ID for the photo in the service."
+                            }
+                        }
+                    },
+                    "sceneInfo": {
+                      "type": "object",
+                      "required": [
+                        "topOfPole",
+                        "bottomOfPole",
+                        "topOfReference",
+                        "bottomOfReference",
+                        "referenceHeight"
+                      ],
+                      "properties": {
+                        "topOfPole": {
+                          "$ref": "../../general/point2d.schema"
+                        },
+                        "bottomOfPole": {
+                          "$ref": "../../general/point2d.schema"
+                        },
+                        "topOfReference": {
+                          "$ref": "../../general/point2d.schema"
+                        },
+                        "bottomOfReference": {
+                          "$ref": "../../general/point2d.schema"
+                        },
+                        "referenceHeight": {
+                          "$ref": "../../general/measurable.schema"
+                        }
+                      }
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "mapNumber": {
+            "description": "Optional map number to align with GIS system.",
+            "type": "string"
+        },
+        "poleTags": {
+            "description": "List of physical tags on the pole.",
+            "items": {
+                "additionalProperties": false,
+                "id": "poleTag",
+                "properties": {
+                    "type": {
+                        "description": "Can be anything, but values known by calc are FIELD, MAP, and FOREIGN",
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "value": {
+                        "description": "the actual value of the pole tag",
+                        "type": "string"
+                    },
+                    "visible": {
+                        "description": "true if the tag is physically visible on the pole",
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "type",
+                    "value"
+                ],
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "remedies": {
+            "description": "List of remedies for the location",
+            "items": {
+                "additionalProperties": false,
+                "id": "remedy",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "description"
+                ],
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "summaryNotes": {
+            "description": "List of summary notes for the location",
+            "id": "summaryNotes",
+            "items": {
+                "additionalProperties": false,
+                "id": "summaryNote",
+                "properties": {
+                    "description": {
+                        "description": "the actual note value",
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "clientFileNote": {
+                        "description": "original note from the client file, can contain the placeholder strings",
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "ownerOne": {
+                        "description": "owner that will replace the text (OWNER1) in the clientFileNote",
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "ownerTwo": {
+                        "description": "owner that will replace the text (OWNER2) in the clientFileNote",
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "direction": {
+                        "description": "direction that will replace the text (DIR) in the clientFileNotee",
+                        "type": "string"
+                    },
+                    "id": {
+                        "description": "the id of the summary note",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "description"
+                ],
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "userDefinedValues": {
+            "description": "Any flat JSON object with string fields. This gets stored as user defined key-value pairs. For example, this could be used for an outside system id.",
+            "id": "userDefinedValues",
+            "type": "object"
+        },
+        "photosToBeAssigned": {
+          "description": "the number and direction of photos that have not yet been assigned to this location",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "number": {
+                "type": "integer"
+              },
+              "direction": {
+                "type": "string"
+              }
+            }
+          }
+        }
+    }
+}
